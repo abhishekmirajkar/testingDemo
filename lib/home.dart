@@ -1,32 +1,47 @@
 import 'package:flutter/material.dart';
+import 'contact.dart';
 import 'models/location.dart';
 import 'package:demo4/location_details.dart';
 import 'mocks/mock_location.dart';
+import 'package:demo4/drawer.dart';
+
+import 'workshops.dart';
+import 'workshops.dart';
 
 class Home extends StatelessWidget {
-  final Location location;
-  Home(this.location);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-        title: Text('Pit4Fiets'),centerTitle:true,backgroundColor: Colors.blue,
-        leading: GestureDetector(
-          onTap: (){
-            /*  write a code for menu bar in home screen    */
-          },
-          child: Icon(Icons.menu) ,
-        ),
+        title: Text('Pit4Fiets'),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
         actions: <Widget>[
           actionmenu(Icons.search),
           actionmenu(Icons.more_vert),
-
         ],
-
       ),
+      //drawer: drawer(),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (value){
+          if(value == 1 ){
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => Workshops(),
+                transitionDuration: Duration(seconds: 0),
+              ),
+            );
+          }else if(value == 2){
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => Contact(),
+                transitionDuration: Duration(seconds: 0),
+              ),
+            );
+          }
+        },
         currentIndex: 0, // this will be set when a new tab is tapped
         items: [
           BottomNavigationBarItem(
@@ -34,62 +49,30 @@ class Home extends StatelessWidget {
             title: new Text('Home'),
           ),
           BottomNavigationBarItem(
+              icon: Icon(Icons.person), title: Text('Workshops')),
+          BottomNavigationBarItem(
             icon: new Icon(Icons.mail),
             title: new Text('Contact'),
           ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Workshops')
-          )
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-
-            children:<Widget>[
-              Expanded(
-                  flex: 4,
-                  child: Container()),
-              Expanded(
-                child: FlatButton(onPressed: (){},
-                  child: Text('Home'),
-                ),
-              ),
-              Expanded(
-                child: FlatButton(onPressed: (){
-                  Navigator.pushNamed(context, '/location');
-                },
-                    child: Text('Workshops')
-                ),
-              ),
-              Expanded(
-                child: FlatButton(
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/about');
-                    },
-                    child: Text('About us')
-                ),
-              )
-            ],
-
-
-          ),
-          Container(
-            constraints: BoxConstraints.tightFor(height: 400.0),
-            child: Image.network('https://thumbs.dreamstime.com/z/bike-mechanic-repairs-bicycle-workshop-closeup-portrait-young-blurred-man-examines-fixes-modern-cycle-transmission-129983969.jpg',
-                fit:BoxFit.fitWidth ),
-          ),
-
-          Column(
-            children: _renderFacts(location),
-          )
 
         ],
       ),
-
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              child: Image.asset("assets/img1.jpg"),
+            ),
+            _sectionTitle("Hello Riders"),
+            _sectionText(
+                "While we could go on about the ethereal glow and seemingly endless heights of this bamboo grove on the outskirts of Kyoto, the sight\'s pleasures extend beyond the visual realm"),
+            _sectionTitle("Hello Riders"),
+            _sectionText(
+                "While we could go on about the ethereal glow and seemingly endless heights of this bamboo grove on the outskirts of Kyoto, the sight\'s pleasures extend beyond the visual realm"),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
@@ -97,63 +80,40 @@ class Home extends StatelessWidget {
         child: const Icon(Icons.navigation),
         backgroundColor: Colors.green,
       ),
-
-
-
-
-
-
-
     );
   }
 
-  Widget section( String title , Color color){
-
+  Widget section(String title, Color color) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey
-      ),
+      decoration: BoxDecoration(color: Colors.grey),
       child: Text('title'),
-
     );
   }
 
-  Widget actionmenu ( icon) {
+  Widget actionmenu(icon) {
     return Padding(
         padding: EdgeInsets.only(right: 20.0),
         child: GestureDetector(
           onTap: () {},
           child: Icon(
-            icon ,
+            icon,
             size: 26.0,
           ),
-        )
-    );
+        ));
   }
+
   Widget _sectionTitle(String text) {
     return Container(
       padding: EdgeInsets.fromLTRB(25, 25, 25, 10),
-      child: Text(text ,
-        textAlign: TextAlign.left,),
+      child: Text(
+        text,
+        textAlign: TextAlign.left,
+      ),
     );
   }
 
   Widget _sectionText(String text) {
     return Container(
-        padding: EdgeInsets.fromLTRB(25, 25, 25,10),
-        child: Text(text));
+        padding: EdgeInsets.fromLTRB(25, 25, 25, 10), child: Text(text));
   }
-
-  List<Widget> _renderFacts(Location location) {
-    var result = <Widget>[];
-    for (int i = 0; i < location.facts.length; i++) {
-      result.add(_sectionTitle(location.facts[i].title));
-      result.add(_sectionText(location.facts[i].text));
-    }
-    return result;
-  }
-
-
-
 }
-

@@ -11,9 +11,9 @@ void main() {
   final Location mockLocation = MockLocation.FetchAny();
   runApp(MaterialApp(
 
-    home: Home(mockLocation),
+    home: Home(),
     routes: {
-      '/home': (context) => Home(mockLocation),
+      '/home': (context) => Home(),
       '/location':(context) => Workshops(),
       '/about':(context)=> Contact()
     },
